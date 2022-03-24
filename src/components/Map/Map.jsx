@@ -62,7 +62,7 @@ const Location = () => {
 	return (
 		<div>
 			<div id="map" style={{ width: '100%', height: '100vh' }} />
-			<button
+			{/* <button
 				style={{
 					position: 'fixed',
 					top: '1rem',
@@ -74,7 +74,7 @@ const Location = () => {
 				onClick={currentPlaceMap}
 			>
 				현재 위치
-			</button>
+			</button> */}
 		</div>
 	);
 };
