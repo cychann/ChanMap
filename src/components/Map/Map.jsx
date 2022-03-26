@@ -1,10 +1,11 @@
 /*global kakao*/
 import React, { useEffect, useState } from 'react';
 
-const Location = () => {
+import { SiTarget } from 'react-icons/si';
+
+const Map = () => {
 	const [map, setMap] = useState();
 	const currentPlaceMap = () => {
-		console.log('asd!~');
 		if (navigator.geolocation) {
 			// 접속 위치를 얻어옴
 			navigator.geolocation.getCurrentPosition(position => {
@@ -57,26 +58,38 @@ const Location = () => {
 		};
 		let map = new kakao.maps.Map(container, options);
 		setMap(map);
+
+		// add zoomControl bar
+		let zoomControl = new kakao.maps.ZoomControl();
+		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+		// map zoom in/out animation
+		map.setLevel(4, {
+			animate: {
+				duration: 500,
+			},
+		});
+
+		currentPlaceMap();
 	}, []);
 
 	return (
 		<div>
-			<div id="map" style={{ width: '100%', height: '100vh' }} />
-			{/* <button
+			<div id="map" style={{ width: '100%', height: '90vh' }} />
+			<SiTarget
+				size="25"
 				style={{
-					position: 'fixed',
-					top: '1rem',
-					left: '1rem',
-					background: 'red',
+					position: 'absolute',
+					top: '18rem',
+					right: '.3rem',
+					background: 'white',
 					height: '2rem',
 					zIndex: '1',
 				}}
 				onClick={currentPlaceMap}
-			>
-				현재 위치
-			</button> */}
+			/>
 		</div>
 	);
 };
 
-export default Location;
+export default Map;

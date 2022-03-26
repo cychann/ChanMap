@@ -11,6 +11,7 @@ const Nav = styled.nav`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	height: 10vh;
 `;
 
 const NavLeft = styled.div`
