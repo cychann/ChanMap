@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 
 import { SiTarget } from 'react-icons/si';
 
+import markers from './Marker.json';
+
 const Map = () => {
 	const [map, setMap] = useState();
 	const currentPlaceMap = () => {
@@ -69,6 +71,30 @@ const Map = () => {
 				duration: 500,
 			},
 		});
+
+		markers.map(marker => {
+			return new kakao.maps.Marker({
+				map: map, // 마커를 표시할 지도
+				position: new kakao.maps.LatLng(marker.lat, marker.lon), // 마커를 표시할 위치
+				title: marker.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+			});
+		});
+
+		let polyline = new kakao.maps.Polyline({
+			map: map,
+			path: [
+				new kakao.maps.LatLng(33.450705, 126.570677),
+				new kakao.maps.LatLng(33.450936, 126.569477),
+				new kakao.maps.LatLng(33.450879, 126.56994),
+				new kakao.maps.LatLng(33.451393, 126.570738),
+			],
+			strokeWeight: 2,
+			strokeColor: '#FF00FF',
+			strokeOpacity: 0.8,
+			strokeStyle: 'dashed',
+		});
+
+		polyline.setMap(map);
 
 		currentPlaceMap();
 	}, []);
