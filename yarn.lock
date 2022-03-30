@@ -8376,6 +8376,11 @@ jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
+kakao.maps.d.ts@^0.1.26:
+  version "0.1.26"
+  resolved "https://registry.yarnpkg.com/kakao.maps.d.ts/-/kakao.maps.d.ts-0.1.26.tgz#82499b5f260a7cf4a66a3c5363cc1da2d25d169b"
+  integrity sha512-62NXQuEN/gsdi6qdsTBndpEvsLLG8GFKnkgFnG1ECi30YIENB1atqozkP2/b8MtkwUztoYwGu3KpXtH2u0xf4Q==
+
 keyboard-key@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/keyboard-key/-/keyboard-key-1.1.0.tgz#6f2e8e37fa11475bb1f1d65d5174f1b35653f5b7"
@@ -10636,6 +10641,13 @@ react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.3, react-is@^16.7.0:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-kakao-maps-sdk@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-kakao-maps-sdk/-/react-kakao-maps-sdk-1.0.6.tgz#ec0e03e56046a3bb12baef3c112183727c5a4cec"
+  integrity sha512-2QXAoP0qGKjI36uesr8YQo+6ihbNDtAWdv0+0L9enmxJVsZX3s5mN9/stK3xXxD4mzLuNPoAtH4A4Cbwa7iTvg==
+  dependencies:
+    kakao.maps.d.ts "^0.1.26"
 
 react-popper@^2.2.4:
   version "2.2.5"

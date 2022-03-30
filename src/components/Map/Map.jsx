@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { SiTarget } from 'react-icons/si';
 
-import markers from './Marker.json';
+import place from './place.json';
 
 const Map = () => {
 	const [map, setMap] = useState();
@@ -52,6 +52,18 @@ const Map = () => {
 		map.setCenter(locPosition);
 	};
 
+	const clickMarker = marker => {
+		let iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+			iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+		// 인포윈도우를 생성합니다
+		let infowindow = new kakao.maps.InfoWindow({
+			content: iwContent,
+			removable: iwRemoveable,
+		});
+		infowindow.open(map, marker);
+	};
+
 	useEffect(() => {
 		let container = document.getElementById('map');
 		let options = {
@@ -72,13 +84,14 @@ const Map = () => {
 			},
 		});
 
-		Object.keys(markers).map(key => {
+		Object.keys(place.markers).map(key => {
 			//  마커 생성
-			markers[key].map(marker => {
+			place.markers[key].map(marker => {
 				return new kakao.maps.Marker({
-					map: map, // 마커를 표시할 지도
-					position: new kakao.maps.LatLng(marker.lat, marker.lon), // 마커를 표시할 위치
-					title: marker.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+					map: map,
+					position: new kakao.maps.LatLng(marker.lat, marker.lon),
+					title: marker.title,
+					clickable: true,
 				});
 			});
 
@@ -86,7 +99,7 @@ const Map = () => {
 			let polyline = new kakao.maps.Polyline({
 				map: map,
 				path: [
-					markers[key].map(marker => {
+					place.markers[key].map(marker => {
 						return new kakao.maps.LatLng(marker.lat, marker.lon);
 					}),
 				],

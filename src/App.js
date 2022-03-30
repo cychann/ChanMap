@@ -1,3 +1,4 @@
+import Map2 from 'components/Map/Map2';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -12,7 +13,7 @@ function App() {
 			<Router>
 				<ResponsiveLayout>
 					<Routes>
-						<Route path="/" element={<Map />} />
+						<Route path="/" element={<Map2 />} />
 					</Routes>
 				</ResponsiveLayout>
 			</Router>
