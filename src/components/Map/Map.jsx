@@ -7,62 +7,6 @@ import place from './place.json';
 
 const Map = () => {
 	const [map, setMap] = useState();
-	const currentPlaceMap = () => {
-		if (navigator.geolocation) {
-			// 접속 위치를 얻어옴
-			navigator.geolocation.getCurrentPosition(position => {
-				let lat = position.coords.latitude; // 위도
-				let lon = position.coords.longitude; // 경도
-
-				let locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 얻어온 좌표로 생성
-				let message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용
-
-				displayMarker(locPosition, message);
-			});
-		} else {
-			// HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정
-
-			let locPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-			let message = 'geolocation을 사용할수 없어요..';
-
-			displayMarker(locPosition, message);
-		}
-	};
-
-	const displayMarker = (locPosition, message) => {
-		// 마커를 생성
-		let marker = new kakao.maps.Marker({
-			map: map,
-			position: locPosition,
-		});
-
-		let iwContent = message, // 인포윈도우에 표시할 내용
-			iwRemoveable = true;
-
-		// 인포윈도우를 생성
-		let infowindow = new kakao.maps.InfoWindow({
-			content: iwContent,
-			removable: iwRemoveable,
-		});
-
-		// 인포윈도우를 마커위에 표시
-		infowindow.open(map, marker);
-
-		// 지도 중심좌표를 접속위치로 변경
-		map.setCenter(locPosition);
-	};
-
-	const clickMarker = marker => {
-		let iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-			iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-		// 인포윈도우를 생성합니다
-		let infowindow = new kakao.maps.InfoWindow({
-			content: iwContent,
-			removable: iwRemoveable,
-		});
-		infowindow.open(map, marker);
-	};
 
 	useEffect(() => {
 		let container = document.getElementById('map');
