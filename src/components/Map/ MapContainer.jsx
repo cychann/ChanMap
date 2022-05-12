@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
 import { SiTarget } from 'react-icons/si';
 
-const Map2 = () => {
+import place from './place.json';
+import Marker from './marker';
+
+const MapContainer = () => {
 	const [map, setMap] = useState({
 		center: { lat: 33.452613, lng: 126.570888 },
 		isPanto: false,
@@ -10,14 +13,12 @@ const Map2 = () => {
 	});
 	const [locationInfo, setLocationInfo] = useState({
 		center: {
-			// 지도의 중심좌표
 			lat: 33.450701,
 			lng: 126.570667,
 		},
 		errMsg: null,
 		isLoading: true,
 	});
-
 	const currentPlaceMap = () => {
 		if (navigator.geolocation) {
 			// GeoLocation을 이용해서 접속 위치를 얻어옴
@@ -73,6 +74,9 @@ const Map2 = () => {
 					</div>
 				</MapMarker>
 			)}
+
+			<Marker />
+
 			<SiTarget
 				size="25"
 				style={{
@@ -89,4 +93,4 @@ const Map2 = () => {
 	);
 };
 
-export default Map2;
+export default MapContainer;
