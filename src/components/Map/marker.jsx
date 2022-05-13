@@ -8,19 +8,31 @@ const MakerContainer = styled.div``;
 const Marker = () => {
 	const markers = [
 		{
-			content: <div style={{ color: '#000' }}>카카오</div>,
+			title: '카카오',
+			imageURL: 'images/js.png',
+			date: '2000-12-09',
+			location: '중구 청구로 64',
 			latlng: { lat: 33.450705, lng: 126.570677 },
 		},
 		{
-			content: <div style={{ color: '#000' }}>생태연못</div>,
+			title: '생태연못',
+			imageURL: 'images/js.png',
+			date: '2000-12-09',
+			location: '중구 청구로 64',
 			latlng: { lat: 33.450936, lng: 126.569477 },
 		},
 		{
-			content: <div style={{ color: '#000' }}>텃밭</div>,
+			title: '텃밭',
+			imageURL: 'images/js.png',
+			date: '2000-12-09',
+			location: '중구 청구로 64',
 			latlng: { lat: 33.450879, lng: 126.56994 },
 		},
 		{
-			content: <div style={{ color: '#000' }}>근린공원</div>,
+			title: '근린공원',
+			imageURL: 'images/js.png',
+			date: '2000-12-09',
+			location: '중구 청구로 64',
 			latlng: { lat: 33.451393, lng: 126.570738 },
 		},
 	];
@@ -48,9 +60,12 @@ const Marker = () => {
 					key={`${marker.title}-${marker.latlng}`}
 					index={index}
 					position={marker.latlng}
-					content={marker.content}
 					onSelectMarker={onSelectMarker}
 					isClicked={selectedMarker === index}
+					title={marker.title}
+					imageURL={marker.imageURL}
+					date={marker.date}
+					location={marker.location}
 				/>
 			))}
 			{polyLine.map((line, index) => (
