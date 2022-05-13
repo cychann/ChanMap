@@ -1,3 +1,4 @@
+import PostMarker from 'components/PostMarker/PostMarker';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ function App() {
 				<ResponsiveLayout>
 					<Routes>
 						<Route path="/" element={<Map />} />
+						<Route path="/post" element={<PostMarker />} />
 					</Routes>
 				</ResponsiveLayout>
 			</Router>

@@ -1,15 +1,36 @@
-import React, { useState } from 'react';
+/*global kakao*/
+import React, { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { SiTarget } from 'react-icons/si';
+import styled from 'styled-components';
 
-import Marker from './marker';
+import Marker from '../Marker/Marker';
+import { useNavigate } from 'react-router-dom';
+
+const MarkerAddButton = styled.button`
+	width: 20rem;
+	height: 5rem;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	background-color: white;
+	color: black;
+	font-size: 1.5rem;
+	margin: 0 1rem;
+	border-radius: 0.3rem;
+	padding: 0.5rem 0.8rem;
+	cursor: pointer;
+	z-index: 3;
+`;
 
 const MapContainer = () => {
+	const navigate = useNavigate();
+
 	const [map, setMap] = useState({
 		center: { lat: 33.452613, lng: 126.570888 },
 		isPanto: false,
 		level: 3,
 	});
+
 	const [locationInfo, setLocationInfo] = useState({
 		center: {
 			lat: 33.450701,
@@ -18,6 +39,49 @@ const MapContainer = () => {
 		errMsg: null,
 		isLoading: true,
 	});
+
+	const [markers, setMarkers] = useState([
+		{
+			title: '카카오',
+			imageURL: 'images/js.png',
+			date: '2000-12-09',
+			location: '중구 청구로 64',
+			latlng: { lat: 33.450705, lng: 126.570677 },
+		},
+		{
+			title: '생태연못',
+			imageURL: 'images/js.png',
+			date: '2000-12-09',
+			location: '중구 청구로 64',
+			latlng: { lat: 33.450936, lng: 126.569477 },
+		},
+		{
+			title: '텃밭',
+			imageURL: 'images/js.png',
+			date: '2000-12-09',
+			location: '중구 청구로 64',
+			latlng: { lat: 33.450879, lng: 126.56994 },
+		},
+		{
+			title: '근린공원',
+			imageURL: 'images/js.png',
+			date: '2000-12-09',
+			location: '중구 청구로 64',
+			latlng: { lat: 33.451393, lng: 126.570738 },
+		},
+	]);
+
+	const [polyLines, setPolyLines] = useState([
+		[
+			{ lat: 33.450705, lng: 126.570677 },
+			{ lat: 33.450936, lng: 126.569477 },
+		],
+		[
+			{ lat: 33.450879, lng: 126.56994 },
+			{ lat: 33.451393, lng: 126.570738 },
+		],
+	]);
+
 	const currentPlaceMap = () => {
 		if (navigator.geolocation) {
 			// GeoLocation을 이용해서 접속 위치를 얻어옴
@@ -56,6 +120,18 @@ const MapContainer = () => {
 		}
 	};
 
+	const addMarker = marker => {
+		setMarkers(markers => {
+			const updated = { ...markers };
+			updated[marker.id] = marker;
+			return updated;
+		});
+	};
+
+	const goMarkerPost = () => {
+		navigate('/post');
+	};
+
 	return (
 		<Map
 			center={map.center}
@@ -74,7 +150,7 @@ const MapContainer = () => {
 				</MapMarker>
 			)}
 
-			<Marker />
+			<Marker markers={markers} polyLines={polyLines} />
 
 			<SiTarget
 				size="25"
@@ -88,6 +164,8 @@ const MapContainer = () => {
 				}}
 				onClick={currentPlaceMap}
 			/>
+
+			<MarkerAddButton onClick={goMarkerPost} />
 		</Map>
 	);
 };
