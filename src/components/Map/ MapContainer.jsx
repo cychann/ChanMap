@@ -5,7 +5,7 @@ import { SiTarget } from 'react-icons/si';
 import styled from 'styled-components';
 
 import Marker from '../Marker/Marker';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const MarkerAddButton = styled.button`
 	width: 20rem;
@@ -24,6 +24,8 @@ const MarkerAddButton = styled.button`
 
 const MapContainer = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const newMarker = location.state;
 
 	const [map, setMap] = useState({
 		center: { lat: 33.452613, lng: 126.570888 },
@@ -40,36 +42,44 @@ const MapContainer = () => {
 		isLoading: true,
 	});
 
-	const [markers, setMarkers] = useState([
-		{
+	const [markers, setMarkers] = useState({
+		1: {
+			id: '1',
 			title: '카카오',
+			content: '내용임',
 			imageURL: 'images/js.png',
 			date: '2000-12-09',
-			location: '중구 청구로 64',
+			address: '중구 청구로 64',
 			latlng: { lat: 33.450705, lng: 126.570677 },
 		},
-		{
+		2: {
+			id: '2',
 			title: '생태연못',
+			content: '내용임',
 			imageURL: 'images/js.png',
 			date: '2000-12-09',
-			location: '중구 청구로 64',
+			address: '중구 청구로 64',
 			latlng: { lat: 33.450936, lng: 126.569477 },
 		},
-		{
+		3: {
+			id: '3',
 			title: '텃밭',
+			content: '내용임',
 			imageURL: 'images/js.png',
 			date: '2000-12-09',
-			location: '중구 청구로 64',
+			address: '중구 청구로 64',
 			latlng: { lat: 33.450879, lng: 126.56994 },
 		},
-		{
+		4: {
+			id: '4',
 			title: '근린공원',
+			content: '내용임',
 			imageURL: 'images/js.png',
 			date: '2000-12-09',
-			location: '중구 청구로 64',
+			address: '중구 청구로 64',
 			latlng: { lat: 33.451393, lng: 126.570738 },
 		},
-	]);
+	});
 
 	const [polyLines, setPolyLines] = useState([
 		[
@@ -121,12 +131,22 @@ const MapContainer = () => {
 	};
 
 	const addMarker = marker => {
+		console.log(markers);
 		setMarkers(markers => {
 			const updated = { ...markers };
 			updated[marker.id] = marker;
 			return updated;
 		});
+		console.log(markers);
 	};
+
+	useEffect(() => {
+		console.log(markers);
+		if (newMarker) {
+			addMarker(newMarker);
+		}
+		console.log(markers);
+	}, []);
 
 	const goMarkerPost = () => {
 		navigate('/post');

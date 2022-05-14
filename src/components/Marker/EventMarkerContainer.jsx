@@ -43,7 +43,7 @@ const EventMarkerContainer = ({
 	index,
 	imageURL,
 	date,
-	location,
+	address,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 
@@ -61,7 +61,7 @@ const EventMarkerContainer = ({
 					</ThumbnailContainer>
 					<Title>{title}</Title>
 					<Date>{date}</Date>
-					<Location>{location}</Location>
+					<Location>{address}</Location>
 				</MarkerContentContainer>
 			)}
 		</MapMarker>
