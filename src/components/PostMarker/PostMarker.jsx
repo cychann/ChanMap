@@ -3,6 +3,45 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+const ModalWrapper = styled.div`
+	box-sizing: border-box;
+	display: ${props => (props.visible ? 'block' : 'none')};
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	overflow: auto;
+	outline: 0;
+`;
+
+const ModalOverlay = styled.div`
+	box-sizing: border-box;
+	display: ${props => (props.visible ? 'block' : 'none')};
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, 0.6);
+	z-index: 999;
+`;
+
+const ModalInner = styled.div`
+	box-sizing: border-box;
+	position: relative;
+	box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
+	background-color: white;
+	border-radius: 10px;
+	width: 100%;
+	height: 50%;
+	top: 50%;
+	/* transform: translateY(-50%); */
+	margin: 0 auto;
+	padding: 40px 20px;
+`;
+
 const PostForm = styled.form`
 	display: flex;
 	flex-direction: column;
@@ -104,7 +143,7 @@ const SubmitButton = styled.button`
 	cursor: pointer;
 `;
 
-const PostPlace = () => {
+const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker }) => {
 	const navigate = useNavigate();
 
 	const formRef = useRef();
@@ -114,6 +153,18 @@ const PostPlace = () => {
 
 	const [searchPlace, SetsearchPlace] = useState([]);
 	const [selectedPlace, setSelectedPlace] = useState();
+
+	const onMaskClick = e => {
+		if (e.target === e.currentTarget) {
+			onClose(e);
+		}
+	};
+
+	const close = e => {
+		if (onClose) {
+			onClose(e);
+		}
+	};
 
 	const handlesearchPlace = e => {
 		// SetsearchPlace(e.target.value);
@@ -172,38 +223,46 @@ const PostPlace = () => {
 			imageURL: 'images/js.png',
 		};
 
-		navigate('/', { state: marker });
+		addMarker(marker);
+		close();
+		// navigate('/', { state: marker });
 	};
 
 	return (
-		<PostForm ref={formRef}>
-			<PostContatiner>
-				<PostLeftContainer>
-					<Title type="text" name="title" placeholder="제목" ref={titleRef} />
-					<Content type="text" name="content" placeholder="내용" ref={contentRef} />
-					<Date type="text" name="date" placeholder="날짜(ex. 2020-12-09)" ref={dateRef} />
-				</PostLeftContainer>
-				<PostRightContainer>
-					<SearchContainer>
-						<SearchInput onChange={handlesearchPlace} placeholder="장소를 검색하세요" />
-						{searchPlace.map(place => (
-							<SearchResult
-								key={place.id}
-								onClick={() => {
-									SelectPlace(place);
-								}}
-							>
-								{place.content}
-							</SearchResult>
-						))}
-					</SearchContainer>
-				</PostRightContainer>
-			</PostContatiner>
-			<SubmitButton name="submit" onClick={onSubmit}>
-				제출
-			</SubmitButton>
-		</PostForm>
+		<ModalOverlay visible={visible}>
+			<ModalWrapper onClick={maskClosable ? onMaskClick : null} tabIndex="-1" visible={visible}>
+				<ModalInner tabIndex="0">
+					<PostForm ref={formRef}>
+						<PostContatiner>
+							<PostLeftContainer>
+								<Title type="text" name="title" placeholder="제목" ref={titleRef} />
+								<Content type="text" name="content" placeholder="내용" ref={contentRef} />
+								<Date type="text" name="date" placeholder="날짜(ex. 2020-12-09)" ref={dateRef} />
+							</PostLeftContainer>
+							<PostRightContainer>
+								<SearchContainer>
+									<SearchInput onChange={handlesearchPlace} placeholder="장소를 검색하세요" />
+									{searchPlace.map(place => (
+										<SearchResult
+											key={place.id}
+											onClick={() => {
+												SelectPlace(place);
+											}}
+										>
+											{place.content}
+										</SearchResult>
+									))}
+								</SearchContainer>
+							</PostRightContainer>
+						</PostContatiner>
+						<SubmitButton name="submit" onClick={onSubmit}>
+							제출
+						</SubmitButton>
+					</PostForm>
+				</ModalInner>
+			</ModalWrapper>
+		</ModalOverlay>
 	);
 };
 
-export default PostPlace;
+export default PostMarker;

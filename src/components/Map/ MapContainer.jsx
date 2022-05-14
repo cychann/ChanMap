@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import Marker from '../Marker/Marker';
 import { useLocation, useNavigate } from 'react-router-dom';
+import PostMarker from 'components/PostMarker/PostMarker';
 
 const MarkerAddButton = styled.button`
 	width: 20rem;
@@ -41,6 +42,8 @@ const MapContainer = () => {
 		errMsg: null,
 		isLoading: true,
 	});
+
+	const [modalVisible, setModalVisible] = useState(false);
 
 	const [markers, setMarkers] = useState({
 		1: {
@@ -131,13 +134,12 @@ const MapContainer = () => {
 	};
 
 	const addMarker = marker => {
-		console.log(markers);
+		console.log(marker);
 		setMarkers(markers => {
 			const updated = { ...markers };
 			updated[marker.id] = marker;
 			return updated;
 		});
-		console.log(markers);
 	};
 
 	useEffect(() => {
@@ -152,13 +154,21 @@ const MapContainer = () => {
 		navigate('/post');
 	};
 
+	const openModal = () => {
+		setModalVisible(true);
+	};
+
+	const closeModal = () => {
+		setModalVisible(false);
+	};
+
 	return (
 		<Map
 			center={map.center}
 			isPanto={map.isPanto}
 			style={{
 				width: '100%',
-				height: '90vh',
+				height: '80vh',
 			}}
 			level={map.level}
 		>
@@ -185,7 +195,16 @@ const MapContainer = () => {
 				onClick={currentPlaceMap}
 			/>
 
-			<MarkerAddButton onClick={goMarkerPost} />
+			<MarkerAddButton onClick={openModal} />
+			{modalVisible && (
+				<PostMarker
+					visible={modalVisible}
+					closable
+					maskClosable
+					onClose={closeModal}
+					addMarker={addMarker}
+				/>
+			)}
 		</Map>
 	);
 };
