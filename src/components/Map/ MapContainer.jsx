@@ -134,7 +134,6 @@ const MapContainer = () => {
 	};
 
 	const addMarker = marker => {
-		console.log(marker);
 		setMarkers(markers => {
 			const updated = { ...markers };
 			updated[marker.id] = marker;
@@ -146,13 +145,14 @@ const MapContainer = () => {
 		console.log(markers);
 		if (newMarker) {
 			addMarker(newMarker);
+			setMap(map => {
+				const updated = { ...map };
+				updated.center = newMarker.latlng;
+				return updated;
+			});
 		}
 		console.log(markers);
 	}, []);
-
-	const goMarkerPost = () => {
-		navigate('/post');
-	};
 
 	const openModal = () => {
 		setModalVisible(true);

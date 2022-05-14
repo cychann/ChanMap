@@ -6,7 +6,6 @@ import EventMarkerContainer from './EventMarkerContainer';
 const MakerContainer = styled.div``;
 
 const Marker = ({ markers, polyLines }) => {
-	console.log(markers);
 	const [selectedMarker, setSeleteMarker] = useState();
 
 	const onSelectMarker = index => {
