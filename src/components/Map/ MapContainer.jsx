@@ -27,6 +27,7 @@ const MapContainer = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const newMarker = location.state;
+	console.log(newMarker);
 
 	const [map, setMap] = useState({
 		center: { lat: 33.452613, lng: 126.570888 },
@@ -133,16 +134,24 @@ const MapContainer = () => {
 		}
 	};
 
-	const addMarker = marker => {
-		setMarkers(markers => {
-			const updated = { ...markers };
-			updated[marker.id] = marker;
-			return updated;
-		});
+	const addMarker = places => {
+		console.log(places);
+
+		console.log(places.length);
+
+		for (let placeId in places) {
+			const place = places[placeId];
+			console.log(place);
+
+			setMarkers(markers => {
+				const updated = { ...markers };
+				updated[place.id] = place;
+				return updated;
+			});
+		}
 	};
 
 	useEffect(() => {
-		console.log(markers);
 		if (newMarker) {
 			addMarker(newMarker);
 			setMap(map => {
@@ -151,7 +160,6 @@ const MapContainer = () => {
 				return updated;
 			});
 		}
-		console.log(markers);
 	}, []);
 
 	const openModal = () => {

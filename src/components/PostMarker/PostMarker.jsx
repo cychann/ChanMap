@@ -152,7 +152,7 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker }) => 
 	const dateRef = useRef();
 
 	const [searchPlace, SetsearchPlace] = useState([]);
-	const [selectedPlace, setSelectedPlace] = useState();
+	const [selectedPlaces, setSelectedPlaces] = useState([]);
 
 	const onMaskClick = e => {
 		if (e.target === e.currentTarget) {
@@ -207,23 +207,34 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker }) => 
 	};
 
 	const SelectPlace = place => {
-		setSelectedPlace(place);
+		// setSelectedPlaces(place);
+		addPlace(place);
+	};
+
+	const addPlace = place => {
+		const updated = [...selectedPlaces, place];
+		setSelectedPlaces(updated);
 	};
 
 	const onSubmit = event => {
 		event.preventDefault();
-		const marker = {
-			id: selectedPlace.id,
-			title: titleRef.current.value || `제목`,
-			content: contentRef.current.value || `내용`,
-			date: dateRef.current.value || `날짜`,
-			address: selectedPlace.address,
-			latlng: selectedPlace.position,
-			// place: selectedPlace,
-			imageURL: 'images/js.png',
-		};
 
-		addMarker(marker);
+		console.log(selectedPlaces);
+
+		const places = selectedPlaces.map(place => {
+			return {
+				id: place.id,
+				title: titleRef.current.value || `제목`,
+				content: contentRef.current.value || `내용`,
+				date: dateRef.current.value || `날짜`,
+				address: place.address,
+				latlng: place.position,
+				// place: place,
+				imageURL: 'images/js.png',
+			};
+		});
+
+		addMarker(places);
 		close();
 	};
 
