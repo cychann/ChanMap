@@ -101,6 +101,7 @@ const MapContainer = () => {
 						},
 						isLoading: false,
 					}));
+
 					setMap({
 						center: {
 							lat: position.coords.latitude,
@@ -188,7 +189,8 @@ const MapContainer = () => {
 				width: '100%',
 				height: '80vh',
 			}}
-			level={3}
+			level={5}
+			isPanto={false}
 			onCreate={setMap}
 		>
 			{!locationInfo.isLoading && (
