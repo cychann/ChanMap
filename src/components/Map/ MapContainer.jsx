@@ -26,8 +26,7 @@ const MarkerAddButton = styled.button`
 const MapContainer = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const newMarker = location.state;
-	console.log(newMarker);
+	const newMarkers = location.state;
 
 	const [map, setMap] = useState({
 		center: { lat: 33.452613, lng: 126.570888 },
@@ -135,13 +134,8 @@ const MapContainer = () => {
 	};
 
 	const addMarker = places => {
-		console.log(places);
-
-		console.log(places.length);
-
 		for (let placeId in places) {
 			const place = places[placeId];
-			console.log(place);
 
 			setMarkers(markers => {
 				const updated = { ...markers };
@@ -151,12 +145,27 @@ const MapContainer = () => {
 		}
 	};
 
+	const addPloyLine = places => {
+		const polyLineArr = [];
+
+		for (let placeId in places) {
+			const place = places[placeId];
+			polyLineArr.push(place.latlng);
+		}
+
+		setPolyLines(polyLines => {
+			const updated = [...polyLines, polyLineArr];
+			setPolyLines(updated);
+		});
+	};
+
 	useEffect(() => {
-		if (newMarker) {
-			addMarker(newMarker);
+		if (newMarkers) {
+			addMarker(newMarkers);
+			addPloyLine(newMarkers);
 			setMap(map => {
 				const updated = { ...map };
-				updated.center = newMarker.latlng;
+				updated.center = newMarkers.latlng;
 				return updated;
 			});
 		}
@@ -211,6 +220,7 @@ const MapContainer = () => {
 					maskClosable
 					onClose={closeModal}
 					addMarker={addMarker}
+					addPloyLine={addPloyLine}
 				/>
 			)}
 		</Map>

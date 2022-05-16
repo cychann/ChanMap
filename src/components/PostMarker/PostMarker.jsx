@@ -143,7 +143,7 @@ const SubmitButton = styled.button`
 	cursor: pointer;
 `;
 
-const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker }) => {
+const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker, addPloyLine }) => {
 	const navigate = useNavigate();
 
 	const formRef = useRef();
@@ -235,6 +235,7 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker }) => 
 		});
 
 		addMarker(places);
+		addPloyLine(places);
 		close();
 	};
 
