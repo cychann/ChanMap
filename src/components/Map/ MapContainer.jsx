@@ -1,11 +1,10 @@
 /*global kakao*/
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { SiTarget } from 'react-icons/si';
 import styled from 'styled-components';
 
 import Marker from '../Marker/Marker';
-import { useLocation, useNavigate } from 'react-router-dom';
 import PostMarker from 'components/PostMarker/PostMarker';
 
 const MarkerAddButton = styled.button`
@@ -24,15 +23,7 @@ const MarkerAddButton = styled.button`
 `;
 
 const MapContainer = () => {
-	const navigate = useNavigate();
-	const location = useLocation();
-	const newMarkers = location.state;
-
-	const [map, setMap] = useState({
-		center: { lat: 33.452613, lng: 126.570888 },
-		isPanto: false,
-		level: 3,
-	});
+	const [map, setMap] = useState();
 
 	const [locationInfo, setLocationInfo] = useState({
 		center: {
@@ -44,6 +35,8 @@ const MapContainer = () => {
 	});
 
 	const [modalVisible, setModalVisible] = useState(false);
+
+	const [addedPlaces, setAddedPlaces] = useState([]);
 
 	const [markers, setMarkers] = useState({
 		1: {
@@ -134,6 +127,8 @@ const MapContainer = () => {
 	};
 
 	const addMarker = places => {
+		setAddedPlaces(places);
+
 		for (let placeId in places) {
 			const place = places[placeId];
 
@@ -160,16 +155,20 @@ const MapContainer = () => {
 	};
 
 	useEffect(() => {
-		if (newMarkers) {
-			addMarker(newMarkers);
-			addPloyLine(newMarkers);
-			setMap(map => {
-				const updated = { ...map };
-				updated.center = newMarkers.latlng;
-				return updated;
+		if (addedPlaces.length !== 0) {
+			const bounds = new kakao.maps.LatLngBounds();
+
+			console.log(addedPlaces);
+			addedPlaces.forEach(place => {
+				// @ts-ignore
+				bounds.extend(new kakao.maps.LatLng(place.latlng.lat, place.latlng.lng));
 			});
+
+			console.log(map);
+
+			map.setBounds(bounds);
 		}
-	}, []);
+	}, [addedPlaces]);
 
 	const openModal = () => {
 		setModalVisible(true);
@@ -181,13 +180,16 @@ const MapContainer = () => {
 
 	return (
 		<Map
-			center={map.center}
-			isPanto={map.isPanto}
+			center={{
+				lat: 37.566826,
+				lng: 126.9786567,
+			}}
 			style={{
 				width: '100%',
 				height: '80vh',
 			}}
-			level={map.level}
+			level={3}
+			onCreate={setMap}
 		>
 			{!locationInfo.isLoading && (
 				<MapMarker position={locationInfo.center}>

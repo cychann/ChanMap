@@ -167,26 +167,19 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker, addPl
 	};
 
 	const handlesearchPlace = e => {
-		// SetsearchPlace(e.target.value);
 		if (!e.target.value) {
 			SetsearchPlace([]);
 		}
 		SearchPlace(e.target.value);
-		console.log(e.target.value);
 	};
 
 	const SearchPlace = place => {
 		const ps = new kakao.maps.services.Places();
 		ps.keywordSearch(`${place}`, (data, status, _pagination) => {
-			const bounds = new kakao.maps.LatLngBounds();
-
 			if (status === kakao.maps.services.Status.OK) {
-				// 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-				// LatLngBounds 객체에 좌표를 추가합니다
 				let markers = [];
 
 				for (let i = 0; i < data.length; i++) {
-					// @ts-ignore
 					markers.push({
 						position: {
 							lat: Number(data[i].y),
@@ -196,18 +189,14 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker, addPl
 						address: data[i].address_name,
 						id: data[i].id,
 					});
-					bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
 				}
 
 				SetsearchPlace(markers);
-
-				// 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
 			}
 		});
 	};
 
 	const SelectPlace = place => {
-		// setSelectedPlaces(place);
 		addPlace(place);
 	};
 
@@ -218,8 +207,6 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker, addPl
 
 	const onSubmit = event => {
 		event.preventDefault();
-
-		console.log(selectedPlaces);
 
 		const places = selectedPlaces.map(place => {
 			return {
