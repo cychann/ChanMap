@@ -67,7 +67,11 @@ const Login = styled.span`
 		background-color: ${darken(0.1, COLOR.BACKGROUND)};
 	}
 `;
-const Navbar = props => {
+const Navbar = ({ authService }) => {
+	const onLogout = () => {
+		authService.logout();
+	};
+
 	return (
 		<Nav>
 			<NavLeft>
@@ -80,7 +84,8 @@ const Navbar = props => {
 			</Search>
 			<LavRight>
 				<Route>내 루트</Route>
-				<Login>로그인</Login>
+				{/* <Login>로그인</Login> */}
+				{onLogout && <button onClick={onLogout}>Logout</button>}
 			</LavRight>
 		</Nav>
 	);

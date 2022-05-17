@@ -6,6 +6,8 @@ import styled from 'styled-components';
 
 import Marker from '../Marker/Marker';
 import PostMarker from 'components/PostMarker/PostMarker';
+import Navbar from 'components/Navbar/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const MarkerAddButton = styled.button`
 	width: 20rem;
@@ -22,7 +24,9 @@ const MarkerAddButton = styled.button`
 	z-index: 3;
 `;
 
-const MapContainer = () => {
+const MapContainer = ({ authService }) => {
+	const navigate = useNavigate();
+
 	const [map, setMap] = useState();
 
 	const [locationInfo, setLocationInfo] = useState({
@@ -155,22 +159,6 @@ const MapContainer = () => {
 		});
 	};
 
-	useEffect(() => {
-		if (addedPlaces.length !== 0) {
-			const bounds = new kakao.maps.LatLngBounds();
-
-			console.log(addedPlaces);
-			addedPlaces.forEach(place => {
-				// @ts-ignore
-				bounds.extend(new kakao.maps.LatLng(place.latlng.lat, place.latlng.lng));
-			});
-
-			console.log(map);
-
-			map.setBounds(bounds);
-		}
-	}, [addedPlaces]);
-
 	const openModal = () => {
 		setModalVisible(true);
 	};
@@ -179,55 +167,80 @@ const MapContainer = () => {
 		setModalVisible(false);
 	};
 
+	useEffect(() => {
+		if (addedPlaces.length !== 0) {
+			const bounds = new kakao.maps.LatLngBounds();
+
+			addedPlaces.forEach(place => {
+				// @ts-ignore
+				bounds.extend(new kakao.maps.LatLng(place.latlng.lat, place.latlng.lng));
+			});
+
+			map.setBounds(bounds);
+		}
+	}, [addedPlaces]);
+
+	useEffect(() => {
+		authService.onAuthChange(user => {
+			if (!user) {
+				navigate('/');
+			} else {
+			}
+		});
+	});
+
 	return (
-		<Map
-			center={{
-				lat: 37.566826,
-				lng: 126.9786567,
-			}}
-			style={{
-				width: '100%',
-				height: '80vh',
-			}}
-			level={5}
-			isPanto={false}
-			onCreate={setMap}
-		>
-			{!locationInfo.isLoading && (
-				<MapMarker position={locationInfo.center}>
-					<div style={{ padding: '5px', color: '#000' }}>
-						{locationInfo.errMsg ? locationInfo.errMsg : '여기에 계신가요?!'}
-					</div>
-				</MapMarker>
-			)}
-
-			<Marker markers={markers} polyLines={polyLines} />
-
-			<SiTarget
-				size="25"
-				style={{
-					position: 'absolute',
-					top: '18rem',
-					right: '.3rem',
-					background: 'white',
-					height: '2rem',
-					zIndex: '1',
+		<>
+			<Navbar authService={authService} />
+			<Map
+				center={{
+					lat: 37.566826,
+					lng: 126.9786567,
 				}}
-				onClick={currentPlaceMap}
-			/>
+				style={{
+					width: '100%',
+					height: '80vh',
+				}}
+				level={5}
+				isPanto={false}
+				onCreate={setMap}
+			>
+				{!locationInfo.isLoading && (
+					<MapMarker position={locationInfo.center}>
+						<div style={{ padding: '5px', color: '#000' }}>
+							{locationInfo.errMsg ? locationInfo.errMsg : '여기에 계신가요?!'}
+						</div>
+					</MapMarker>
+				)}
 
-			<MarkerAddButton onClick={openModal} />
-			{modalVisible && (
-				<PostMarker
-					visible={modalVisible}
-					closable
-					maskClosable
-					onClose={closeModal}
-					addMarker={addMarker}
-					addPloyLine={addPloyLine}
+				<Marker markers={markers} polyLines={polyLines} />
+
+				<SiTarget
+					size="25"
+					style={{
+						position: 'absolute',
+						top: '18rem',
+						right: '.3rem',
+						background: 'white',
+						height: '2rem',
+						zIndex: '1',
+					}}
+					onClick={currentPlaceMap}
 				/>
-			)}
-		</Map>
+
+				<MarkerAddButton onClick={openModal} />
+				{modalVisible && (
+					<PostMarker
+						visible={modalVisible}
+						closable
+						maskClosable
+						onClose={closeModal}
+						addMarker={addMarker}
+						addPloyLine={addPloyLine}
+					/>
+				)}
+			</Map>
+		</>
 	);
 };
 
