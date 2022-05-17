@@ -166,7 +166,7 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker, addPl
 		}
 	};
 
-	const handlesearchPlace = e => {
+	const handleSearchPlace = e => {
 		if (!e.target.value) {
 			SetsearchPlace([]);
 		}
@@ -239,7 +239,7 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker, addPl
 							</PostLeftContainer>
 							<PostRightContainer>
 								<SearchContainer>
-									<SearchInput onChange={handlesearchPlace} placeholder="장소를 검색하세요" />
+									<SearchInput onChange={handleSearchPlace} placeholder="장소를 검색하세요" />
 									{searchPlace.map(place => (
 										<SearchResult
 											key={place.id}
