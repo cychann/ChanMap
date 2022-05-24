@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { MapMarker } from 'react-kakao-maps-sdk';
+import PlaceDetail from 'components/PlaceDetail/PlaceDetail';
 
 const MarkerContentContainer = styled.div`
 	width: 12rem;
 	height: 12rem;
+	cursor: pointer;
 `;
 
 const ThumbnailContainer = styled.div`
@@ -34,37 +36,50 @@ const Date = styled.div`
 const Location = styled.div`
 	font-size: 1rem;
 `;
+const EventMarkerContainer = ({ isClicked, onSelectMarker, index, marker }) => {
+	const { latlng, title, imageURL, date, address } = marker;
 
-const EventMarkerContainer = ({
-	position,
-	title,
-	isClicked,
-	onSelectMarker,
-	index,
-	imageURL,
-	date,
-	address,
-}) => {
-	const [isVisible, setIsVisible] = useState(false);
+	const [infoVisible, setInfoVisible] = useState(false);
+
+	const [detailModalVisible, setDetailModalVisible] = useState(false);
 
 	const onClickMarker = () => {
-		setIsVisible(!isVisible);
+		setInfoVisible(!infoVisible);
 		onSelectMarker(index);
 	};
 
+	const openDetailModal = () => {
+		setDetailModalVisible(true);
+	};
+
+	const closeDetailModal = () => {
+		setDetailModalVisible(false);
+	};
+
 	return (
-		<MapMarker position={position} onClick={onClickMarker}>
-			{isVisible && isClicked && (
-				<MarkerContentContainer>
-					<ThumbnailContainer>
-						<Thumbnail src={imageURL} />
-					</ThumbnailContainer>
-					<Title>{title}</Title>
-					<Date>{date}</Date>
-					<Location>{address}</Location>
-				</MarkerContentContainer>
+		<>
+			<MapMarker position={latlng} onClick={onClickMarker}>
+				{infoVisible && isClicked && (
+					<MarkerContentContainer onClick={openDetailModal}>
+						<ThumbnailContainer>
+							<Thumbnail src={imageURL} />
+						</ThumbnailContainer>
+						<Title>{title}</Title>
+						<Date>{date}</Date>
+						<Location>{address}</Location>
+					</MarkerContentContainer>
+				)}
+			</MapMarker>
+			{detailModalVisible && (
+				<PlaceDetail
+					visible={detailModalVisible}
+					closable
+					maskClosable
+					onClose={closeDetailModal}
+					marker={marker}
+				/>
 			)}
-		</MapMarker>
+		</>
 	);
 };
 

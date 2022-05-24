@@ -19,13 +19,9 @@ const Marker = ({ markers, polyLines }) => {
 					<EventMarkerContainer
 						key={key}
 						index={index}
-						position={markers[key].latlng}
+						marker={markers[key]}
 						onSelectMarker={onSelectMarker}
 						isClicked={selectedMarker === index}
-						title={markers[key].title}
-						imageURL={markers[key].imageURL}
-						date={markers[key].date}
-						address={markers[key].address}
 					/>
 				);
 			})}

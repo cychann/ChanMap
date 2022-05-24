@@ -5,7 +5,7 @@ import { SiTarget } from 'react-icons/si';
 import styled from 'styled-components';
 
 import Marker from '../Marker/Marker';
-import PostMarker from 'components/PostMarker/PostMarker';
+import PostPlace from 'components/PostPlace/PostPlace';
 import Navbar from 'components/Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +38,7 @@ const MapContainer = ({ authService }) => {
 		isLoading: true,
 	});
 
-	const [modalVisible, setModalVisible] = useState(false);
+	const [postModalVisible, setPostModalVisible] = useState(false);
 
 	const [addedPlaces, setAddedPlaces] = useState([]);
 
@@ -159,14 +159,13 @@ const MapContainer = ({ authService }) => {
 		});
 	};
 
-	const openModal = () => {
-		setModalVisible(true);
+	const openPostModal = () => {
+		setPostModalVisible(true);
 	};
 
-	const closeModal = () => {
-		setModalVisible(false);
+	const closePostModal = () => {
+		setPostModalVisible(false);
 	};
-
 	useEffect(() => {
 		if (addedPlaces.length !== 0) {
 			const bounds = new kakao.maps.LatLngBounds();
@@ -175,6 +174,8 @@ const MapContainer = ({ authService }) => {
 				// @ts-ignore
 				bounds.extend(new kakao.maps.LatLng(place.latlng.lat, place.latlng.lng));
 			});
+
+			setMap(null);
 
 			map.setBounds(bounds);
 		}
@@ -228,13 +229,13 @@ const MapContainer = ({ authService }) => {
 					onClick={currentPlaceMap}
 				/>
 
-				<MarkerAddButton onClick={openModal} />
-				{modalVisible && (
-					<PostMarker
-						visible={modalVisible}
+				<MarkerAddButton onClick={openPostModal} />
+				{postModalVisible && (
+					<PostPlace
+						visible={postModalVisible}
 						closable
 						maskClosable
-						onClose={closeModal}
+						onClose={closePostModal}
 						addMarker={addMarker}
 						addPloyLine={addPloyLine}
 					/>

@@ -13,6 +13,7 @@ class AuthServcie {
 		this.firebaseAuth = getAuth();
 		this.googleProvider = new GoogleAuthProvider();
 		this.githubProvider = new GithubAuthProvider();
+		console.log(this.firebaseAuth);
 	}
 	login(providerName) {
 		const provider = this.getProvider(providerName);
