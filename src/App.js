@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Map from './components/Map/ MapContainer';
 import ResponsiveLayout from './layouts/responsive.layout';
 import GlobalStyles from './styles/GlobalStyles';
+// import 'semantic-ui-css/semantic.min.css';
 
 function App({ authService }) {
 	return (

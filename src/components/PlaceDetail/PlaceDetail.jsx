@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const ModalWrapper = styled.div`
 	box-sizing: border-box;
@@ -153,6 +156,11 @@ const PlaceDetail = ({ onClose, maskClosable, closable, visible, marker }) => {
 							<Content>{content}</Content>
 							<Date>{date}</Date>
 							<Address>{address}</Address>
+							<FontAwesomeIcon
+								icon={faPenToSquare}
+								style={{ cursor: 'pointer', marginRight: '2rem' }}
+							/>
+							<FontAwesomeIcon icon={faTrash} style={{ cursor: 'pointer' }} />
 						</ArticleInfo>
 					</ArticleContainer>
 				</ModalInner>

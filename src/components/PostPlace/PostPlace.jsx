@@ -58,7 +58,9 @@ const PostLeftContainer = styled.div`
 	flex-direction: column;
 `;
 
-const PostRightContainer = styled.div``;
+const PostRightContainer = styled.div`
+	display: flex;
+`;
 
 const Title = styled.input`
 	width: 20rem;
@@ -114,6 +116,8 @@ const SearchInput = styled.input`
 `;
 
 const SearchResult = styled.div``;
+
+const PlacesContainer = styled.div``;
 
 const PlaceSearchButton = styled.button`
 	width: 20rem;
@@ -205,6 +209,11 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker, addPl
 		setSelectedPlaces(updated);
 	};
 
+	const deletePlace = place => {
+		const updated = selectedPlaces.filter(p => p.id !== place.id);
+		setSelectedPlaces(updated);
+	};
+
 	const onSubmit = event => {
 		event.preventDefault();
 
@@ -251,6 +260,13 @@ const PostMarker = ({ onClose, maskClosable, closable, visible, addMarker, addPl
 										</SearchResult>
 									))}
 								</SearchContainer>
+								<PlacesContainer>
+									{selectedPlaces.map(place => (
+										<PlacesContainer key={place.id} onClick={() => deletePlace(place)}>
+											{place.content}
+										</PlacesContainer>
+									))}
+								</PlacesContainer>
 							</PostRightContainer>
 						</PostContatiner>
 						<SubmitButton name="submit" onClick={onSubmit}>
